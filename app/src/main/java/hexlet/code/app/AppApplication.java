@@ -7,9 +7,7 @@ import org.springframework.web.bind.annotation.RestController;
 @SpringBootApplication
 @RestController
 public class AppApplication {
-
-	public static void main(String[] args) {               //          http://localhost:8080/
-		SpringApplication.run(AppApplication.class, args);
-	}
-
+    public static void main(String[] args) {
+        SpringApplication.run(AppApplication.class, args);   //http://localhost:8080/welcome
+    }
 }
