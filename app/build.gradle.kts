@@ -14,6 +14,7 @@ description = "Demo project for Spring Boot"
 java {
 	toolchain {
 		languageVersion = JavaLanguageVersion.of(21)
+
 	}
 }
 
@@ -21,15 +22,36 @@ repositories {
 	mavenCentral()
 }
 
+val lombokVersion = "1.18.38"
+val postgresqlVersion = "42.3.3"
+
 dependencies {
 	implementation("org.springframework.boot:spring-boot-starter")
+	implementation ("org.springframework.boot:spring-boot-starter-validation")
 	implementation("org.springframework.boot:spring-boot-starter-web")
 	implementation("org.springframework.boot:spring-boot-starter-data-jpa")
+	implementation ("org.springframework.data:spring-data-jpa")
+	implementation ("org.liquibase:liquibase-core")
+	implementation ("org.postgresql:postgresql:$postgresqlVersion")
+	implementation("org.mapstruct:mapstruct:1.5.5.Final")
 
-	implementation ("com.h2database:h2")
+	implementation ("org.springframework.boot:spring-boot-starter-actuator")
+	implementation ("org.springframework.boot:spring-boot-starter-security")
+	implementation ("org.springframework.boot:spring-boot-starter-oauth2-resource-server")
+	implementation ("org.springframework.boot:spring-boot-devtools")
+	annotationProcessor ("org.springframework.boot:spring-boot-configuration-processor")
+
+	runtimeOnly ("com.h2database:h2")
+	annotationProcessor ("org.projectlombok:lombok:$lombokVersion")
+	compileOnly ("org.projectlombok:lombok:$lombokVersion")
+
+	annotationProcessor("org.mapstruct:mapstruct-processor:1.5.5.Final")
+
+	testAnnotationProcessor("org.mapstruct:mapstruct-processor:1.5.5.Final")
 
 
 	testImplementation("org.springframework.boot:spring-boot-starter-test")
+	testImplementation("org.springframework.security:spring-security-test")
 	testRuntimeOnly("org.junit.platform:junit-platform-launcher")
 }
 
