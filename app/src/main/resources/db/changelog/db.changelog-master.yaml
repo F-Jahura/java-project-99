@@ -15,13 +15,9 @@ databaseChangeLog:
               - column:
                   name: first_name
                   type: VARCHAR(100)
-                  constraints:
-                    nullable: false
               - column:
                   name: last_name
                   type: VARCHAR(100)
-                  constraints:
-                    nullable: false
               - column:
                   name: email
                   type: VARCHAR(255)

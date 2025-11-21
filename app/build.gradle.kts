@@ -34,24 +34,31 @@ dependencies {
 	implementation ("org.liquibase:liquibase-core")
 	implementation ("org.postgresql:postgresql:$postgresqlVersion")
 	implementation("org.mapstruct:mapstruct:1.5.5.Final")
+	implementation ("org.mybatis.spring.boot:mybatis-spring-boot-starter:2.2.0")
 
 	implementation ("org.springframework.boot:spring-boot-starter-actuator")
 	implementation ("org.springframework.boot:spring-boot-starter-security")
 	implementation ("org.springframework.boot:spring-boot-starter-oauth2-resource-server")
 	implementation ("org.springframework.boot:spring-boot-devtools")
-	annotationProcessor ("org.springframework.boot:spring-boot-configuration-processor")
+	implementation("org.springdoc:springdoc-openapi-ui:1.6.15")
+	implementation("org.openapitools:jackson-databind-nullable:0.2.6")
 
-	runtimeOnly ("com.h2database:h2")
+	implementation ("net.datafaker:datafaker:2.4.3")
+
+	implementation("org.instancio:instancio-junit:3.3.0")
+	implementation ("org.instancio:instancio-core:1.6.0")
+
 	annotationProcessor ("org.projectlombok:lombok:$lombokVersion")
-	compileOnly ("org.projectlombok:lombok:$lombokVersion")
-
+	annotationProcessor ("org.springframework.boot:spring-boot-configuration-processor")
 	annotationProcessor("org.mapstruct:mapstruct-processor:1.5.5.Final")
 
+	compileOnly ("org.projectlombok:lombok:$lombokVersion")
+	runtimeOnly ("com.h2database:h2")
+
 	testAnnotationProcessor("org.mapstruct:mapstruct-processor:1.5.5.Final")
-
-
 	testImplementation("org.springframework.boot:spring-boot-starter-test")
 	testImplementation("org.springframework.security:spring-security-test")
+	testImplementation("net.javacrumbs.json-unit:json-unit-assertj:4.1.1")
 	testRuntimeOnly("org.junit.platform:junit-platform-launcher")
 }
 

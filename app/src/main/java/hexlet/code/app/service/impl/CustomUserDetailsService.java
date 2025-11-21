@@ -1,4 +1,4 @@
-package hexlet.code.app.service;
+package hexlet.code.app.service.impl;
 
 import hexlet.code.app.model.User;
 import hexlet.code.app.repository.UserRepository;
@@ -33,9 +33,8 @@ public class CustomUserDetailsService implements UserDetailsManager {
 
     @Override
     public void deleteUser(String username) {
-        throw new UnsupportedOperationException("Unimplemented method 'deleteUser'");
+        userRepository.deleteByEmail(username);
     }
-
     @Override
     public void changePassword(String oldPassword, String newPassword) {
         throw new UnsupportedOperationException("Unimplemented method 'changePassword'");
@@ -43,7 +42,7 @@ public class CustomUserDetailsService implements UserDetailsManager {
 
     @Override
     public boolean userExists(String username) {
-        throw new UnsupportedOperationException("Unimplemented method 'userExists'");
+        return userRepository.existsByEmail(username);
     }
 
     @Override

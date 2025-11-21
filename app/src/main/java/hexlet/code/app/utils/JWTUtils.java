@@ -15,8 +15,6 @@ public class JWTUtils {
     JwtEncoder encoder;
 
     public String generateToken(String username) {
-        /*String token = null;
-        return token;*/
         Instant now = Instant.now();
         JwtClaimsSet claims = JwtClaimsSet.builder()
                 .issuer("self")
