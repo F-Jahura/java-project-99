@@ -64,7 +64,6 @@ public class User implements UserDetails, BaseEntity {
     @JsonIgnore
     private List<Task> tasks = new ArrayList<>();
 
-
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         return new ArrayList<GrantedAuthority>();

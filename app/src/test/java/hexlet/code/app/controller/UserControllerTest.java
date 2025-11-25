@@ -45,7 +45,6 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @Transactional
 @Rollback
 public class UserControllerTest {
-
     @Autowired
     private WebApplicationContext wac;
 
@@ -76,23 +75,23 @@ public class UserControllerTest {
     private User testUser;
     private User newUser;
 
-    private JwtRequestPostProcessor testUserToken;
+    private JwtRequestPostProcessor token;
     private JwtRequestPostProcessor newUserToken;
 
     @BeforeEach
-    public void setUp() {
+    void setUp() {
         testUser = Instancio.of(modelGenerator.getUserModel()).create();
         userRepository.save(testUser);
 
         newUser = Instancio.of(modelGenerator.getUserModel()).create();
 
-        testUserToken = jwt().jwt(builder -> builder.subject(testUser.getEmail()));
+        token = jwt().jwt(builder -> builder.subject("hexlet@example.com"));
         newUserToken = jwt().jwt(builder -> builder.subject(newUser.getEmail()));
     }
 
     @Test
-    public void testIndex() throws Exception {
-        var response = mockMvc.perform(get("/api/users").with(jwt()))
+    void testIndex() throws Exception {
+        var response = mockMvc.perform(get("/api/users").with(token))
                 .andExpect(status().isOk())
                 .andReturn()
                 .getResponse();
@@ -107,8 +106,8 @@ public class UserControllerTest {
     }
 
     @Test
-    public void testShow() throws Exception {
-        var response = mockMvc.perform(get("/api/users/" + testUser.getId()).with(jwt()))
+    void testShow() throws Exception {
+        var response = mockMvc.perform(get("/api/users/" + testUser.getId()).with(token))
                 .andExpect(status().isOk())
                 .andReturn()
                 .getResponse();
@@ -122,12 +121,12 @@ public class UserControllerTest {
     }
 
     @Test
-    public void testCreate() throws Exception {
+    void testCreate() throws Exception {
         var request = post("/api/users")
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(om.writeValueAsString(newUser));
 
-        var response = mockMvc.perform(request.with(jwt()))
+        var response = mockMvc.perform(request.with(token))
                 .andExpect(status().isCreated())
                 .andReturn()
                 .getResponse();
@@ -145,7 +144,7 @@ public class UserControllerTest {
     }
 
     @Test
-    public void testUpdate() throws Exception {
+    void testUpdate() throws Exception {
         var dto = new UserUpdateDTO();
         dto.setFirstName(JsonNullable.of("Somebody"));
         dto.setLastName(JsonNullable.undefined());
@@ -156,25 +155,24 @@ public class UserControllerTest {
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(om.writeValueAsString(dto));
 
-        mockMvc.perform(request.with(testUserToken))
+        mockMvc.perform(request.with(token))
                 .andExpect(status().isOk());
 
         var foundUser = userRepository.findById(testUser.getId());
         assertThat(foundUser.isPresent()).isTrue();
-        //assertThat(foundUser.get().getFirstName()).isEqualTo(dto.getFirstName().get());
         assertThat(foundUser.get().getEmail()).isEqualTo(testUser.getEmail());
     }
 
     @Test
-    public void testDelete() throws Exception {
-        mockMvc.perform(delete("/api/users/" + testUser.getId()).with(testUserToken))
+    void testDelete() throws Exception {
+        mockMvc.perform(delete("/api/users/" + testUser.getId()).with(token))
                 .andExpect(status().isNoContent());
         assertThat(userRepository.existsById(testUser.getId())).isFalse();
     }
 
     @Test
-    public void testUnauthorizedRights() throws Exception {
-        mockMvc.perform(get("/welcome").with(testUserToken))
+    void testUnauthorizedRights() throws Exception {
+        mockMvc.perform(get("/welcome").with(token))
                 .andExpect(status().isOk());
 
         var testUserId = testUser.getId();
@@ -198,7 +196,7 @@ public class UserControllerTest {
     }
 
     @Test
-    public void testForbidden() throws Exception {
+    void testForbidden() throws Exception {
 
         var testUserId = testUser.getId();
 

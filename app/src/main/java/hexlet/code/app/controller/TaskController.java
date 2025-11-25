@@ -28,10 +28,19 @@ import java.util.List;
 public class TaskController {
     @Autowired
     private TaskService service;
+/*
+    @GetMapping()
+    @ResponseStatus(HttpStatus.OK)
+    ResponseEntity<List<TaskDTO>> index() {
+        var tasks = service.findAll();
+        return ResponseEntity.ok()
+                .header("X-Total-Count", String.valueOf(tasks.size()))
+                .body(tasks);
+    }*/
 
     @GetMapping()
     @ResponseStatus(HttpStatus.OK)
-    public ResponseEntity<List<TaskDTO>> index(
+    public ResponseEntity<List<TaskDTO>> indexFilter(
             TaskParamsDTO params,
             @RequestParam(defaultValue = "1") int pageCount,
             @RequestParam(defaultValue = "15") int pageSize) {
@@ -47,7 +56,6 @@ public class TaskController {
     TaskDTO showTask(@PathVariable Long id) {
         return service.findById(id);
     }
-
 
     @PostMapping()
     @ResponseStatus(HttpStatus.CREATED)

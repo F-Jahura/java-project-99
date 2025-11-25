@@ -5,13 +5,11 @@ spring:
     username: u
     password: 1
   jpa:
-    show-sql: true
     hibernate:
-      ddl-auto: validate
+      ddl-auto: update
     database-platform: org.hibernate.dialect.H2Dialect
   h2:
     console:
       enabled: true
   liquibase:
     enabled: true
-    change-log: classpath:db/changelog/db.changelog-master.yaml

@@ -1,8 +1,12 @@
 package hexlet.code.app.utils;
 
+import hexlet.code.app.exception.ResourceNotFoundException;
 import hexlet.code.app.exception.WrongCredentialException;
+import hexlet.code.app.model.Task;
 import hexlet.code.app.model.User;
+import hexlet.code.app.repository.TaskRepository;
 import hexlet.code.app.repository.UserRepository;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Component;
 
@@ -11,17 +15,17 @@ import java.util.Objects;
 
 @Component
 public class UserUtils {
-    private final UserRepository userRepository;
-    private final String adminUserName;
-    /*
     @Autowired
-    private TaskRepository taskRepository;*/
+    private UserRepository userRepository;
+    private final String adminUserName;
 
-    public UserUtils(UserRepository userRepository) {
-        this.userRepository = userRepository;
+    @Autowired
+    private TaskRepository taskRepository;
+
+    public UserUtils() {
         this.adminUserName = "hexlet@example.com";
     }
-/*
+
     public boolean isAssignee(Long taskId) {
         Task task = taskRepository.findById(taskId)
                 .orElseThrow(() -> new ResourceNotFoundException("Task not found with id " + taskId));
@@ -31,7 +35,6 @@ public class UserUtils {
         return currentUser != null && Objects.equals(currentUser.getId(), assignee.getId());
     }
 
- */
     public User getCurrentUser() {
         var authentication = SecurityContextHolder.getContext().getAuthentication();
         if (authentication == null || !authentication.isAuthenticated()) {

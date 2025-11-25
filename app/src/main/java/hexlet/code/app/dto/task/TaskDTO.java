@@ -22,4 +22,12 @@ public class TaskDTO {
     @CreatedDate
     private LocalDateTime createdAt;
     private Set<Long> taskLabelIds = new HashSet<>();
+
+    public Set<Long> getTaskLabelIds() {
+        return taskLabelIds;
+    }
+
+    public void setTaskLabelIds(Set<Long> taskLabelIds) {
+        this.taskLabelIds = taskLabelIds;
+    }
 }
