@@ -1,7 +1,7 @@
 spring:
   profiles: development
   datasource:
-    url: jdbc:h2:file:./db
+    url: jdbc:h2:mem:./db
     username: u
     password: 1
   jpa:
@@ -12,4 +12,4 @@ spring:
     console:
       enabled: true
   liquibase:
-    enabled: true
+    enabled: false

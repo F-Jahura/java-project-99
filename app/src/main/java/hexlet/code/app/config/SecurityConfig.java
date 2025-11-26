@@ -24,6 +24,7 @@ import org.springframework.security.config.annotation.web.configurers.AbstractHt
 @Configuration
 @EnableWebSecurity
 @EnableMethodSecurity
+@SuppressWarnings("java:S4502")
 public class SecurityConfig {
     private final JwtDecoder jwtDecoder;
     private final PasswordEncoder passwordEncoder;
@@ -37,6 +38,7 @@ public class SecurityConfig {
     }
 
     @Bean
+    @SuppressWarnings("java:S4502")
     public SecurityFilterChain securityFilterChain(HttpSecurity http, HandlerMappingIntrospector introspector)
             throws Exception {
         return http

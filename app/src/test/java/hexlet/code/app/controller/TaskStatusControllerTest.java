@@ -111,6 +111,20 @@ public class TaskStatusControllerTest {
     }
 
     @Test
+    void testShowSlug() throws Exception {
+        var response = mockMvc.perform(get("/api/task_statuses/slug/" + testStatus.getSlug()).with(token))
+                .andExpect(status().isOk())
+                .andReturn()
+                .getResponse();
+        var body = response.getContentAsString();
+
+        assertThatJson(body).and(
+                v -> v.node("name").isEqualTo(testStatus.getName()),
+                v -> v.node("slug").isEqualTo(testStatus.getSlug())
+        );
+    }
+
+    @Test
     void testCreate() throws Exception {
         var request = post("/api/task_statuses")
                 .contentType(MediaType.APPLICATION_JSON)

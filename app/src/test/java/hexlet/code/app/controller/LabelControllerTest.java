@@ -44,6 +44,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @Transactional
 @Rollback
 public class LabelControllerTest {
+
     @Autowired
     private WebApplicationContext wac;
 

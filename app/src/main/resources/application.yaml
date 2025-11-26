@@ -1,4 +1,6 @@
 spring:
+  application:
+    name: app
   profiles:
     active: development
   datasource:

@@ -28,15 +28,6 @@ import java.util.List;
 public class TaskController {
     @Autowired
     private TaskService service;
-/*
-    @GetMapping()
-    @ResponseStatus(HttpStatus.OK)
-    ResponseEntity<List<TaskDTO>> index() {
-        var tasks = service.findAll();
-        return ResponseEntity.ok()
-                .header("X-Total-Count", String.valueOf(tasks.size()))
-                .body(tasks);
-    }*/
 
     @GetMapping()
     @ResponseStatus(HttpStatus.OK)
