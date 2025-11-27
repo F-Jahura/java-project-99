@@ -1,20 +1,22 @@
 clean:
-	make -C app clean
+	./gradlew clean
 
 build:
-	make -C app build
+	./gradlew build
 
 test:
-	make -C app test
+	./gradlew test
 
 report:
-	make -C app report
+	./gradlew jacocoTestReport
 
 sonar:
-	make -C app sonar
+	./gradlew sonar
 
 lint:
-	make -C app lint
+	./gradlew checkstyleMain
 
 run:
-	make -C app run
+	./gradlew bootRun
+
+.PHONY: build
