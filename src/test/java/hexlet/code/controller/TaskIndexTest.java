@@ -105,19 +105,6 @@ public class TaskIndexTest {
     }
 
     @Test
-    public void testIndex() throws Exception {
-        var response = mockMvc.perform(get("/api/tasks").with(adminToken))
-                .andExpect(status().isOk())
-                .andReturn().getResponse();
-
-        assertThat(response.getContentAsString())
-                .contains(String.valueOf(task1.getAssignee().getId()))
-                .contains(task1.getName())
-                .contains(task1.getDescription())
-                .contains(task1.getTaskStatus().getSlug());
-    }
-
-    @Test
     public void testTitleCont() throws Exception {
         var result = mockMvc.perform(get("/api/tasks?titleCont=ame3").with(adminToken))
                 .andExpect(status().isOk())

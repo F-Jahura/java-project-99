@@ -60,7 +60,6 @@ public class AuthenticationControllerTest {
 
     @BeforeEach
     public void setUp() {
-        userRepository.deleteAll();
         newUser = Instancio.of(modelGenerator.getUserModel()).create();
     }
     @Test

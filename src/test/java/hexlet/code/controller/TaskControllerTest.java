@@ -1,7 +1,8 @@
 package hexlet.code.controller;
 
+import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
-//import hexlet.code.dto.task.TaskCreateDTO;
+import hexlet.code.dto.task.TaskDTO;
 import hexlet.code.mapper.TaskMapper;
 import hexlet.code.model.Label;
 import hexlet.code.model.Task;
@@ -22,9 +23,10 @@ import org.springframework.http.MediaType;
 import org.springframework.test.annotation.Rollback;
 import org.springframework.test.web.servlet.MockMvc;
 
-import java.util.Arrays;
-import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
+import java.util.HashMap;
+import java.util.Arrays;
 import java.util.Set;
 
 import static net.javacrumbs.jsonunit.assertj.JsonAssertions.assertThatJson;
@@ -36,6 +38,8 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+
+import static org.assertj.core.api.Assertions.assertThat;
 
 @SpringBootTest(properties = {"command.line.runner.enabled=false", "application.runner.enabled=false"})
 @AutoConfigureMockMvc
@@ -133,6 +137,39 @@ public class TaskControllerTest {
                 //v -> v.node("taskLabelIds").isEqualTo(testTask.getLabels())
         );
     }
+
+    @Test
+    public void testIndex() throws Exception {
+        taskRepository.save(testTask);
+
+        var response = mockMvc.perform(get("/api/tasks").with(adminToken))
+                .andExpect(status().isOk())
+                .andReturn().getResponse();
+        var body = response.getContentAsString();
+
+        List<TaskDTO> taskDTOS = om.readValue(body, new TypeReference<>() { });
+
+        var actual = taskDTOS.stream().map(taskMapper::map).toList();
+        var expected = taskRepository.findAll();
+        assertThat(actual).containsExactlyInAnyOrderElementsOf(expected);
+    }
+/*
+    @Test
+    public void testIndex1() throws Exception {
+        postRepository.save(testPost);
+
+        var response = mockMvc.perform(get("/api/posts").with(token))
+                .andExpect(status().isOk())
+                .andReturn()
+                .getResponse();
+        var body = response.getContentAsString();
+
+        List<PostDTO> postDTOS = om.readValue(body, new TypeReference<>() {});
+
+        var actual = postDTOS.stream().map(postMapper::map).toList();
+        var expected = postRepository.findAll();
+        Assertions.assertThat(actual).containsExactlyInAnyOrderElementsOf(expected);
+    }*/
 
 /*
     @Test
