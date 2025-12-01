@@ -7,17 +7,16 @@ import hexlet.code.exception.ResourceNotFoundException;
 import hexlet.code.mapper.TaskStatusMapper;
 import hexlet.code.repository.TaskStatusRepository;
 import hexlet.code.service.TaskStatusService;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 
 @Service
+@AllArgsConstructor
 public class TaskStatusServiceImpl implements TaskStatusService {
-    @Autowired
-    private TaskStatusRepository repository;
-    @Autowired
-    private TaskStatusMapper mapper;
+    private final TaskStatusRepository repository;
+    private final TaskStatusMapper mapper;
 
     @Override
     public List<TaskStatusDTO> findAll() {
@@ -67,10 +66,5 @@ public class TaskStatusServiceImpl implements TaskStatusService {
     @Override
     public void deleteById(Long id) {
         repository.deleteById(id);
-    }
-
-    @Override
-    public boolean existsBySlug(String slug) {
-        return false;
     }
 }

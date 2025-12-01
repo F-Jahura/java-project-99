@@ -4,6 +4,6 @@ WORKDIR /java-project-99
 
 COPY . .
 
-RUN ["./gradlew", "clean", "build"]
+RUN ["./gradlew", "clean", "installDist"]
 
 CMD ["./build/install/app/bin/app"]

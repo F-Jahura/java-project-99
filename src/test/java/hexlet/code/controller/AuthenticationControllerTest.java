@@ -18,7 +18,6 @@ import org.springframework.security.oauth2.jwt.JwtDecoder;
 import org.springframework.security.provisioning.UserDetailsManager;
 import org.springframework.test.annotation.Rollback;
 import org.springframework.test.web.servlet.MockMvc;
-import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.context.WebApplicationContext;
 
 import java.util.Map;
@@ -28,7 +27,6 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 @SpringBootTest(properties = {"command.line.runner.enabled=false", "application.runner.enabled=false"})
 @AutoConfigureMockMvc
-@Transactional
 @Rollback
 public class AuthenticationControllerTest {
     @Autowired

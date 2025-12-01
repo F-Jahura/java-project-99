@@ -27,7 +27,6 @@ import org.springframework.security.test.web.servlet.request
         .SecurityMockMvcRequestPostProcessors.JwtRequestPostProcessor;
 import org.springframework.test.annotation.Rollback;
 import org.springframework.test.web.servlet.MockMvc;
-import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.context.WebApplicationContext;
 
 import java.util.List;
@@ -44,7 +43,6 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 @SpringBootTest(properties = {"command.line.runner.enabled=false", "application.runner.enabled=false"})
 @AutoConfigureMockMvc
-@Transactional
 @Rollback
 public class UserControllerTest {
 
@@ -90,7 +88,7 @@ public class UserControllerTest {
 
         newUser = Instancio.of(modelGenerator.getUserModel()).create();
 
-        token = jwt().jwt(builder -> builder.subject("hexlet@example.com"));
+        token = jwt().jwt(builder -> builder.subject(testUser.getEmail()));
         newUserToken = jwt().jwt(builder -> builder.subject(newUser.getEmail()));
     }
 

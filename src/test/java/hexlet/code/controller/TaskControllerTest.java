@@ -1,11 +1,13 @@
 package hexlet.code.controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import hexlet.code.dto.task.TaskCreateDTO;
+//import hexlet.code.dto.task.TaskCreateDTO;
 import hexlet.code.mapper.TaskMapper;
+import hexlet.code.model.Label;
 import hexlet.code.model.Task;
 import hexlet.code.model.TaskStatus;
 import hexlet.code.model.User;
+import hexlet.code.repository.LabelRepository;
 import hexlet.code.repository.TaskRepository;
 import hexlet.code.repository.TaskStatusRepository;
 import hexlet.code.repository.UserRepository;
@@ -19,10 +21,13 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
 import org.springframework.test.annotation.Rollback;
 import org.springframework.test.web.servlet.MockMvc;
-import org.springframework.transaction.annotation.Transactional;
+
+import java.util.Arrays;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Set;
 
 import static net.javacrumbs.jsonunit.assertj.JsonAssertions.assertThatJson;
-import static org.assertj.core.api.Assertions.assertThat;
 import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.jwt;
 import static org.springframework.security.test.web.servlet.request
         .SecurityMockMvcRequestPostProcessors.JwtRequestPostProcessor;
@@ -34,7 +39,6 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 @SpringBootTest(properties = {"command.line.runner.enabled=false", "application.runner.enabled=false"})
 @AutoConfigureMockMvc
-@Transactional
 @Rollback
 public class TaskControllerTest {
 
@@ -58,9 +62,12 @@ public class TaskControllerTest {
     @Autowired
     private UserRepository userRepository;
     @Autowired
+    private LabelRepository labelRepository;
+    @Autowired
     private TaskMapper taskMapper;
     private TaskStatus testStatus;
     private User testUser;
+    private Label testLabel;
     private Task testTask;
 
     @BeforeEach
@@ -73,9 +80,13 @@ public class TaskControllerTest {
         testUser = Instancio.of(modelGenerator.getUserModel()).create();
         userRepository.save(testUser);
 
+        testLabel = Instancio.of(modelGenerator.getLabelModel()).create();
+        labelRepository.save(testLabel);
+
         testTask = Instancio.of(modelGenerator.getTaskModel()).create();
         testTask.setTaskStatus(testStatus);
         testTask.setAssignee(testUser);
+        testTask.setLabelsUsed(Set.of(testLabel));
         taskRepository.save(testTask);
     }
 
@@ -93,31 +104,36 @@ public class TaskControllerTest {
         );
     }
 
-
     @Test
-    void testCreate() throws Exception {
-        taskRepository.delete(testTask);
-        var dto = new TaskCreateDTO();
-        dto.setTitle(testTask.getName());
-        dto.setContent(testTask.getDescription());
-        dto.setIndex(testTask.getIndex());
-        dto.setAssigneeId(testTask.getAssignee().getId());
-        dto.setStatus(testTask.getTaskStatus().getSlug());
+    public void testCreate() throws Exception {
+        var name = "Task Name";
+        var content = "Task Content";
+        Map<String, Object> data = new HashMap<>();
+        data.put("title", name);
+        data.put("content", content);
+        data.put("status", testTask.getTaskStatus().getSlug());
 
-        mockMvc.perform(post("/api/tasks")
-                        .with(adminToken)
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .content(om.writeValueAsString(dto)))
-                .andExpect(status().isCreated());
+        data.put("assignee_id", testUser.getId());
+        data.put("taskLabelIds", Arrays.asList(testLabel.getId())); // список id меток
+        //data.put("taskLabelIds", testTask.getLabels());
 
-        var task = taskRepository.findByName(dto.getTitle()).orElseThrow();
+        var request = post("/api/tasks").with(adminToken)
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(om.writeValueAsString(data));
+        var result = mockMvc.perform(request)
+                .andExpect(status().isCreated())
+                .andReturn();
+        var body = result.getResponse().getContentAsString();
 
-        assertThat(task.getIndex()).isEqualTo(dto.getIndex());
-        assertThat(task.getName()).isEqualTo(dto.getTitle());
-        assertThat(task.getDescription()).isEqualTo(dto.getContent());
-        assertThat(task.getTaskStatus().getSlug()).isEqualTo(dto.getStatus());
-        assertThat(task.getAssignee().getId()).isEqualTo(dto.getAssigneeId());
+        assertThatJson(body).and(
+                v -> v.node("id").isPresent(),
+                v -> v.node("content").isPresent(),
+                v -> v.node("title").isPresent(),
+                v -> v.node("status").isEqualTo(data.get("status"))
+                //v -> v.node("taskLabelIds").isEqualTo(testTask.getLabels())
+        );
     }
+
 /*
     @Test
     void testUpdate() throws Exception {

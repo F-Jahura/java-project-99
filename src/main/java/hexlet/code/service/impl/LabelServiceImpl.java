@@ -7,18 +7,17 @@ import hexlet.code.exception.ResourceNotFoundException;
 import hexlet.code.mapper.LabelMapper;
 import hexlet.code.repository.LabelRepository;
 import hexlet.code.service.LabelService;
+import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 
 @Service
+@AllArgsConstructor
 public class LabelServiceImpl implements LabelService {
-    @Autowired
-    private LabelRepository repository;
-
-    @Autowired
-    private LabelMapper mapper;
+    private final LabelRepository repository;
+    private final LabelMapper mapper;
 
     @Override
     public List<LabelDTO> findAll() {

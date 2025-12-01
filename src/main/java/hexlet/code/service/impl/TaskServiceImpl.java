@@ -9,6 +9,7 @@ import hexlet.code.mapper.TaskMapper;
 import hexlet.code.repository.TaskRepository;
 import hexlet.code.service.TaskService;
 import hexlet.code.specification.TaskSpecification;
+import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
@@ -16,13 +17,11 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 
 @Service
+@AllArgsConstructor
 public class TaskServiceImpl implements TaskService {
-    @Autowired
-    private TaskRepository repository;
-    @Autowired
-    private TaskMapper mapper;
-    @Autowired
-    private TaskSpecification specBuilder;
+    private final TaskRepository repository;
+    private final TaskMapper mapper;
+    private final TaskSpecification specBuilder;
 /*
     @Override
     public List<TaskDTO> findAll() {

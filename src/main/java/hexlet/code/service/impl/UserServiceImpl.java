@@ -7,19 +7,16 @@ import hexlet.code.exception.ResourceNotFoundException;
 import hexlet.code.mapper.UserMapper;
 import hexlet.code.repository.UserRepository;
 import hexlet.code.service.UserService;
+import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 
 @Service
+@AllArgsConstructor
 public class UserServiceImpl implements UserService {
     private final UserRepository repository;
     private final UserMapper mapper;
-
-    public UserServiceImpl(UserRepository repository, UserMapper mapper) {
-        this.repository = repository;
-        this.mapper = mapper;
-    }
 
     @Override
     public List<UserDTO> findAll() {

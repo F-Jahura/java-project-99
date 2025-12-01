@@ -23,7 +23,6 @@ import org.springframework.http.MediaType;
 import org.springframework.security.oauth2.jwt.JwtDecoder;
 import org.springframework.test.annotation.Rollback;
 import org.springframework.test.web.servlet.MockMvc;
-import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.context.WebApplicationContext;
 import org.springframework.security.test.web.servlet.request
         .SecurityMockMvcRequestPostProcessors.JwtRequestPostProcessor;
@@ -41,7 +40,6 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 @SpringBootTest(properties = {"command.line.runner.enabled=false", "application.runner.enabled=false"})
 @AutoConfigureMockMvc
-@Transactional
 @Rollback
 public class LabelControllerTest {
 
@@ -136,19 +134,17 @@ public class LabelControllerTest {
     @Test
     void testUpdate() throws Exception {
         var dto = new LabelUpdateDTO();
-        dto.setName(JsonNullable.of("bug"));
+        dto.setName(JsonNullable.of("Documentation"));
 
-        var request = put("/api/labels/" + testLabel.getId())
-                .contentType(MediaType.APPLICATION_JSON)
-                .content(om.writeValueAsString(dto));
-
-        mockMvc.perform(request.with(token))
+        mockMvc.perform(put("/api/labels/" + testLabel.getId())
+                        .with(token)
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(om.writeValueAsString(dto)))
                 .andExpect(status().isOk());
 
-        var foundLabel = repository.findById(testLabel.getId());
-        assertThat(foundLabel.isPresent()).isTrue();
-        assertThat(foundLabel.get().getName()).isEqualTo(dto.getName().get());
+        assertThat(repository.findByName(dto.getName().get())).isPresent();
     }
+
 
     @Test
     void testDelete() throws Exception {

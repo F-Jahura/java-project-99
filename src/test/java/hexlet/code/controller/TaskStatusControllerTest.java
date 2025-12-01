@@ -5,6 +5,7 @@ import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import hexlet.code.dto.taskstatus.TaskStatusDTO;
 import hexlet.code.dto.taskstatus.TaskStatusUpdateDTO;
+import hexlet.code.exception.ResourceNotFoundException;
 import hexlet.code.mapper.TaskStatusMapper;
 import hexlet.code.model.TaskStatus;
 import hexlet.code.repository.TaskStatusRepository;
@@ -23,7 +24,6 @@ import org.springframework.http.MediaType;
 import org.springframework.security.oauth2.jwt.JwtDecoder;
 import org.springframework.test.annotation.Rollback;
 import org.springframework.test.web.servlet.MockMvc;
-import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.context.WebApplicationContext;
 import org.springframework.security.test.web.servlet.request
         .SecurityMockMvcRequestPostProcessors.JwtRequestPostProcessor;
@@ -41,7 +41,6 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 @SpringBootTest(properties = {"command.line.runner.enabled=false", "application.runner.enabled=false"})
 @AutoConfigureMockMvc
-@Transactional
 @Rollback
 public class TaskStatusControllerTest {
     @Autowired
@@ -150,7 +149,7 @@ public class TaskStatusControllerTest {
     void testUpdate() throws Exception {
         var dto = new TaskStatusUpdateDTO();
         dto.setName(JsonNullable.of("Progress"));
-        dto.setSlug(JsonNullable.of("progress"));
+        dto.setSlug(JsonNullable.undefined());
 
         var request = put("/api/task_statuses/" + testStatus.getId())
                 .contentType(MediaType.APPLICATION_JSON)
@@ -159,10 +158,12 @@ public class TaskStatusControllerTest {
         mockMvc.perform(request.with(token))
                 .andExpect(status().isOk());
 
-        var foundTask = repository.findById(testStatus.getId());
-        assertThat(foundTask.isPresent()).isTrue();
-        assertThat(foundTask.get().getName()).isEqualTo(testStatus.getName());
-        assertThat(foundTask.get().getSlug()).isEqualTo(testStatus.getSlug());
+        var foundTask = repository.findById(testStatus.getId())
+                .orElseThrow(() -> new ResourceNotFoundException(
+                        String.format("Task status with id %d not found", testStatus.getId())));
+
+        assertThat(foundTask.getName()).isEqualTo(dto.getName().get());
+        assertThat(foundTask.getSlug()).isEqualTo(testStatus.getSlug());
     }
 
     @Test

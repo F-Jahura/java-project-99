@@ -13,5 +13,4 @@ public interface TaskStatusService {
     TaskStatusDTO create(TaskStatusCreateDTO dto);
     TaskStatusDTO updateById(TaskStatusUpdateDTO dto, Long id);
     void deleteById(Long id);
-    boolean existsBySlug(String slug);
 }

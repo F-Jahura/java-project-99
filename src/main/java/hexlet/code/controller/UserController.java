@@ -5,6 +5,7 @@ import hexlet.code.dto.user.UserDTO;
 import hexlet.code.dto.user.UserUpdateDTO;
 import hexlet.code.service.UserService;
 import hexlet.code.utils.UserUtils;
+import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -26,15 +27,11 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/api/users")
+@AllArgsConstructor
 public class UserController {
-    @Autowired
-    private UserService userService;
-
-    @Autowired
-    private UserUtils userUtils;
-
-    @Autowired
-    private PasswordEncoder passwordEncoder;
+    private final UserService userService;
+    private final UserUtils userUtils;
+    private final PasswordEncoder passwordEncoder;
 
     @GetMapping()
     @ResponseStatus(HttpStatus.OK)

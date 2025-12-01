@@ -61,11 +61,13 @@ public class ModelGenerator {
 
         taskModel = Instancio.of(Task.class)
                 .ignore(Select.field("id"))
-                //.supply(Select.field(Task::getAssignee), () -> faker.number().numberBetween(0, 999))
+                //.supply(Select.field("assignee"), () -> faker.number().numberBetween(0, 999))
                 .supply(Select.field("index"), () -> faker.number().numberBetween(0, 999))
                 .supply(Select.field("name"), () -> faker.name().title())
                 .supply(Select.field("description"), () -> faker.lorem().characters(0, 200))
                 .ignore(Select.field("taskStatus"))
+                .ignore(Select.field("labelsUsed"))
+                .ignore(Select.field("assignee"))
                 .toModel();
 
         labelModel = Instancio.of(Label.class)
