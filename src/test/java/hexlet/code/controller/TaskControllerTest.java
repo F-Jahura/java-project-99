@@ -28,6 +28,7 @@ import java.util.Map;
 import java.util.HashMap;
 import java.util.Arrays;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 import static net.javacrumbs.jsonunit.assertj.JsonAssertions.assertThatJson;
 import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.jwt;
@@ -133,7 +134,11 @@ public class TaskControllerTest {
                 v -> v.node("id").isPresent(),
                 v -> v.node("content").isPresent(),
                 v -> v.node("title").isPresent(),
-                v -> v.node("status").isEqualTo(data.get("status"))
+                v -> v.node("status").isEqualTo(data.get("status")),
+                v -> v.node("taskLabelIds").isEqualTo(
+                        testTask.getLabelsUsed().stream()
+                                .map(Label::getId)
+                                .collect(Collectors.toSet()))
                 //v -> v.node("taskLabelIds").isEqualTo(testTask.getLabels())
         );
     }
