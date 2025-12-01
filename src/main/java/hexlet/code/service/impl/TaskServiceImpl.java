@@ -10,7 +10,6 @@ import hexlet.code.repository.TaskRepository;
 import hexlet.code.service.TaskService;
 import hexlet.code.specification.TaskSpecification;
 import lombok.AllArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 
