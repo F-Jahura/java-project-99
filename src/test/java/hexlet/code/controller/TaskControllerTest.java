@@ -46,7 +46,6 @@ import static org.assertj.core.api.Assertions.assertThat;
 @AutoConfigureMockMvc
 @Rollback
 public class TaskControllerTest {
-
     @Autowired
     private MockMvc mockMvc;
 
@@ -119,7 +118,7 @@ public class TaskControllerTest {
         data.put("status", testTask.getTaskStatus().getSlug());
 
         data.put("assignee_id", testUser.getId());
-        data.put("taskLabelIds", Arrays.asList(testLabel.getId())); // список id меток
+        data.put("taskLabelIds", Arrays.asList(testLabel.getId()));
         //data.put("taskLabelIds", testTask.getLabels());
 
         var request = post("/api/tasks").with(adminToken)
@@ -139,14 +138,12 @@ public class TaskControllerTest {
                         testTask.getLabelsUsed().stream()
                                 .map(Label::getId)
                                 .collect(Collectors.toSet()))
-                //v -> v.node("taskLabelIds").isEqualTo(testTask.getLabels())
         );
     }
 
     @Test
     public void testIndex() throws Exception {
-        taskRepository.save(testTask);
-
+        //taskRepository.save(testTask);
         var response = mockMvc.perform(get("/api/tasks").with(adminToken))
                 .andExpect(status().isOk())
                 .andReturn().getResponse();
@@ -158,26 +155,8 @@ public class TaskControllerTest {
         var expected = taskRepository.findAll();
         assertThat(actual).containsExactlyInAnyOrderElementsOf(expected);
     }
-/*
-    @Test
-    public void testIndex1() throws Exception {
-        postRepository.save(testPost);
 
-        var response = mockMvc.perform(get("/api/posts").with(token))
-                .andExpect(status().isOk())
-                .andReturn()
-                .getResponse();
-        var body = response.getContentAsString();
-
-        List<PostDTO> postDTOS = om.readValue(body, new TypeReference<>() {});
-
-        var actual = postDTOS.stream().map(postMapper::map).toList();
-        var expected = postRepository.findAll();
-        Assertions.assertThat(actual).containsExactlyInAnyOrderElementsOf(expected);
-    }*/
-
-/*
-    @Test
+    /*@Test
     void testUpdate() throws Exception {
         var dto = new TaskUpdateDTO();
         dto.setTitle(JsonNullable.of("title-1"));
@@ -206,8 +185,8 @@ public class TaskControllerTest {
                 .andExpect(status().isNoContent());
 
         assertThat(taskRepository.existsById(testTask.getId())).isFalse();
-    }
-    */
+    }*/
+
 
     @Test
     public void unauthorizedTest() throws Exception {
