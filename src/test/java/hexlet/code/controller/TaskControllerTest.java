@@ -110,7 +110,8 @@ public class TaskControllerTest {
 
         var task = taskRepository.findById(testTask.getId())
                 .orElseThrow(() ->
-                        new ResourceNotFoundException(String.format("Task status with id %d not found", testTask.getId())));;
+                        new ResourceNotFoundException(String.format("Task status with id %d not found",
+                                testTask.getId())));
 
         assertNotNull(task);
 
