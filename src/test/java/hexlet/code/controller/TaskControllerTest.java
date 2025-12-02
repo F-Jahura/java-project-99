@@ -3,6 +3,7 @@ package hexlet.code.controller;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import hexlet.code.dto.task.TaskDTO;
+import hexlet.code.exception.ResourceNotFoundException;
 import hexlet.code.mapper.TaskMapper;
 import hexlet.code.model.Label;
 import hexlet.code.model.Task;
@@ -22,13 +23,14 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
 import org.springframework.test.annotation.Rollback;
 import org.springframework.test.web.servlet.MockMvc;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 
-import java.util.List;
-import java.util.Map;
-import java.util.HashMap;
-import java.util.Arrays;
+//import java.util.Arrays;
 import java.util.Set;
-import java.util.stream.Collectors;
+//import java.util.HashMap;
+//import java.util.Map;
+//import java.util.stream.Collectors;
+import java.util.List;
 
 import static net.javacrumbs.jsonunit.assertj.JsonAssertions.assertThatJson;
 import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.jwt;
@@ -76,8 +78,6 @@ public class TaskControllerTest {
 
     @BeforeEach
     public void setUp() {
-        adminToken = jwt().jwt(builder -> builder.subject("hexlet@example.com"));
-
         testStatus = Instancio.of(modelGenerator.getTaskStatusModel()).create();
         taskStatusRepository.save(testStatus);
 
@@ -88,35 +88,40 @@ public class TaskControllerTest {
         labelRepository.save(testLabel);
 
         testTask = Instancio.of(modelGenerator.getTaskModel()).create();
+
         testTask.setTaskStatus(testStatus);
         testTask.setAssignee(testUser);
         testTask.setLabelsUsed(Set.of(testLabel));
         taskRepository.save(testTask);
-    }
 
-    @Test
-    void showTest() throws Exception {
-        var response = mockMvc.perform(get("/api/tasks/" + testTask.getId())
-                        .with(adminToken))
-                .andExpect(status().isOk())
-                .andReturn()
-                .getResponse();
-
-        assertThatJson(response.getContentAsString()).and(
-                v -> v.node("assignee_id").isEqualTo(testUser.getId()),
-                v -> v.node("status").isEqualTo(testStatus.getSlug())
-        );
+        adminToken = jwt().jwt(builder -> builder.subject("hexlet@example.com"));
     }
 
     @Test
     public void testCreate() throws Exception {
-        var name = "Task Name";
+        var dto = taskMapper.map(testTask);
+
+        var request = post("/api/tasks").with(adminToken)
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(om.writeValueAsString(dto));
+
+        mockMvc.perform(request)
+                .andExpect(status().isCreated());
+
+        var task = taskRepository.findById(testTask.getId())
+                .orElseThrow(() ->
+                        new ResourceNotFoundException(String.format("Task status with id %d not found", testTask.getId())));;
+
+        assertNotNull(task);
+
+        assertThat(task.getName()).isEqualTo(testTask.getName());
+
+        /*var name = "Task Name";
         var content = "Task Content";
         Map<String, Object> data = new HashMap<>();
         data.put("title", name);
         data.put("content", content);
         data.put("status", testTask.getTaskStatus().getSlug());
-
         data.put("assignee_id", testUser.getId());
         data.put("taskLabelIds", Arrays.asList(testLabel.getId()));
         //data.put("taskLabelIds", testTask.getLabels());
@@ -138,6 +143,20 @@ public class TaskControllerTest {
                         testTask.getLabelsUsed().stream()
                                 .map(Label::getId)
                                 .collect(Collectors.toSet()))
+        );*/
+    }
+
+    @Test
+    void showTest() throws Exception {
+        var response = mockMvc.perform(get("/api/tasks/" + testTask.getId())
+                        .with(adminToken))
+                .andExpect(status().isOk())
+                .andReturn()
+                .getResponse();
+
+        assertThatJson(response.getContentAsString()).and(
+                v -> v.node("assignee_id").isEqualTo(testUser.getId()),
+                v -> v.node("status").isEqualTo(testStatus.getSlug())
         );
     }
 
