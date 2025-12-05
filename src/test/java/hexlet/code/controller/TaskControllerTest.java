@@ -23,9 +23,14 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
 import org.springframework.test.annotation.Rollback;
 import org.springframework.test.web.servlet.MockMvc;
+//import org.springframework.test.web.servlet.setup.MockMvcBuilders;
+//import org.springframework.web.context.WebApplicationContext;
+//import static org.springframework.security.test.web.servlet.setup.SecurityMockMvcConfigurers.springSecurity;
+
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 //import java.util.Arrays;
+import java.nio.charset.StandardCharsets;
 import java.util.Set;
 //import java.util.HashMap;
 //import java.util.Map;
@@ -48,6 +53,8 @@ import static org.assertj.core.api.Assertions.assertThat;
 @AutoConfigureMockMvc
 @Rollback
 public class TaskControllerTest {
+    /*@Autowired
+    private WebApplicationContext wac;*/
     @Autowired
     private MockMvc mockMvc;
 
@@ -78,6 +85,8 @@ public class TaskControllerTest {
 
     @BeforeEach
     public void setUp() {
+        taskRepository.deleteAll();
+
         testStatus = Instancio.of(modelGenerator.getTaskStatusModel()).create();
         taskStatusRepository.save(testStatus);
 

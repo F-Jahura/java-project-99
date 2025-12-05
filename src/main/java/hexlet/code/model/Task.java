@@ -19,7 +19,8 @@ import jakarta.persistence.Table;
 import jakarta.validation.constraints.NotNull;
 
 import jakarta.validation.constraints.NotBlank;
-import lombok.Data;
+import lombok.Getter;
+import lombok.Setter;
 import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
 import org.springframework.data.annotation.CreatedDate;
@@ -30,7 +31,8 @@ import java.util.HashSet;
 import java.util.Set;
 
 
-@Data
+@Getter
+@Setter
 @Entity
 @Table(name = "tasks")
 @EntityListeners(AuditingEntityListener.class)

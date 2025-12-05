@@ -3,6 +3,7 @@ package hexlet.code.component;
 import hexlet.code.dto.label.LabelCreateDTO;
 import hexlet.code.dto.taskstatus.TaskStatusCreateDTO;
 import hexlet.code.dto.user.UserCreateDTO;
+import hexlet.code.repository.LabelRepository;
 import hexlet.code.repository.TaskStatusRepository;
 import hexlet.code.service.LabelService;
 import hexlet.code.service.TaskStatusService;
@@ -23,6 +24,8 @@ public class DataInitializer implements ApplicationRunner {
     private TaskStatusRepository taskStatusRepository;
     @Autowired
     private LabelService labelService;
+    @Autowired
+    private LabelRepository labelRepository;
 
 
     @Override
@@ -58,7 +61,7 @@ public class DataInitializer implements ApplicationRunner {
         String[] labels = {"feature", "bug"};
 
         for (String label : labels) {
-            if (!labelService.existsByName(label)) {
+            if (!labelRepository.existsByName(label)) {
                 var labelData = new LabelCreateDTO();
                 labelData.setName(label);
                 labelService.create(labelData);

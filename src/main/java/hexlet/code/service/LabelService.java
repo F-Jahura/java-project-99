@@ -13,5 +13,4 @@ public interface LabelService {
     LabelDTO create(LabelCreateDTO dto);
     LabelDTO updateById(LabelUpdateDTO dto, Long id);
     void deleteById(Long id);
-    boolean existsByName(String name);
 }

@@ -9,7 +9,6 @@ import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -28,6 +27,12 @@ import java.util.List;
 @AllArgsConstructor
 public class TaskController {
     private final TaskService service;
+
+    @PostMapping()
+    @ResponseStatus(HttpStatus.CREATED)
+    TaskDTO createTask(@Valid @RequestBody TaskCreateDTO taskData) {
+        return service.create(taskData);
+    }
 
     @GetMapping()
     @ResponseStatus(HttpStatus.OK)
@@ -48,22 +53,15 @@ public class TaskController {
         return service.findById(id);
     }
 
-    @PostMapping()
-    @ResponseStatus(HttpStatus.CREATED)
-    TaskDTO createTask(@Valid @RequestBody TaskCreateDTO taskData) {
-        return service.create(taskData);
-    }
 
     @PutMapping("/{id}")
     @ResponseStatus(HttpStatus.OK)
-    @PreAuthorize("@userUtils.isAssignee(#id)")
     TaskDTO updateTask(@PathVariable Long id, @Valid @RequestBody TaskUpdateDTO dto) {
         return service.updateById(dto, id);
     }
 
     @DeleteMapping("/{id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    @PreAuthorize("@userUtils.isAssignee(#id)")
     void deleteTask(@PathVariable Long id) {
         service.deleteById(id);
     }

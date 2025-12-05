@@ -45,11 +45,6 @@ public class UserUtils {
         return userRepository.findByEmail(email)
                 .orElseThrow(() -> new WrongCredentialException("No user found with this name"));
     }
-/*
-    public User getTestUser() {
-        return userRepository.findByEmail("hexlet@example.com")
-                .orElseThrow(() -> new RuntimeException("User doesn't exist"));
-    }*/
 
     public boolean isAdmin() {
         var currentUserName = getCurrentUser().getUsername();
