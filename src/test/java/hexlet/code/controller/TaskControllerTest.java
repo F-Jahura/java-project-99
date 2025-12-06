@@ -31,11 +31,13 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 //import java.util.Arrays;
 
+
 import java.util.Set;
-//import java.util.HashMap;
-//import java.util.Map;
-//import java.util.stream.Collectors;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.stream.Collectors;
 import java.util.List;
+import java.util.Arrays;
 
 import static net.javacrumbs.jsonunit.assertj.JsonAssertions.assertThatJson;
 import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.jwt;
@@ -108,7 +110,7 @@ public class TaskControllerTest {
 
     @Test
     public void testCreate() throws Exception {
-        var dto = taskMapper.map(testTask);
+        /*var dto = taskMapper.map(testTask);
 
         var request = post("/api/tasks").with(adminToken)
                 .contentType(MediaType.APPLICATION_JSON)
@@ -124,9 +126,9 @@ public class TaskControllerTest {
 
         assertNotNull(task);
 
-        assertThat(task.getName()).isEqualTo(testTask.getName());
+        assertThat(task.getName()).isEqualTo(testTask.getName());*/
 
-        /*var name = "Task Name";
+        var name = "Task Name";
         var content = "Task Content";
         Map<String, Object> data = new HashMap<>();
         data.put("title", name);
@@ -153,7 +155,7 @@ public class TaskControllerTest {
                         testTask.getLabelsUsed().stream()
                                 .map(Label::getId)
                                 .collect(Collectors.toSet()))
-        );*/
+        );
     }
 
     @Test
