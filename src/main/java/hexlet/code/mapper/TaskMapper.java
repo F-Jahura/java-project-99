@@ -76,6 +76,9 @@ public abstract class TaskMapper {
 
     @Named("idToUser")
     public User idToUser(Long id) {
+        if (id == null) {
+            return null;
+        }
         return userRepository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException(
                         String.format("User with id %d not found", id)));
