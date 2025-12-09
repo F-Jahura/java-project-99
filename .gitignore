@@ -1,3 +1,4 @@
+src/main/generated/
 node_modules/
 HELP.md
 .idea
