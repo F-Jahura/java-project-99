@@ -3,6 +3,7 @@ package hexlet.code.controller;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import hexlet.code.dto.task.TaskDTO;
+import hexlet.code.dto.task.TaskUpdateDTO;
 import hexlet.code.mapper.TaskMapper;
 import hexlet.code.model.Label;
 import hexlet.code.model.Task;
@@ -16,6 +17,7 @@ import hexlet.code.util.ModelGenerator;
 import org.instancio.Instancio;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.BeforeEach;
+import org.openapitools.jackson.nullable.JsonNullable;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -47,8 +49,6 @@ import static org.assertj.core.api.Assertions.assertThat;
 @AutoConfigureMockMvc
 @Rollback
 public class TaskControllerTest {
-    /*@Autowired
-    private WebApplicationContext wac;*/
     @Autowired
     private MockMvc mockMvc;
 
@@ -102,24 +102,6 @@ public class TaskControllerTest {
 
     @Test
     public void testCreate() throws Exception {
-        /*var dto = taskMapper.map(testTask);
-
-        var request = post("/api/tasks").with(adminToken)
-                .contentType(MediaType.APPLICATION_JSON)
-                .content(om.writeValueAsString(dto));
-
-        mockMvc.perform(request)
-                .andExpect(status().isCreated());
-
-        var task = taskRepository.findById(testTask.getId())
-                .orElseThrow(() ->
-                        new ResourceNotFoundException(String.format("Task status with id %d not found",
-                                testTask.getId())));
-
-        assertNotNull(task);
-
-        assertThat(task.getName()).isEqualTo(testTask.getName());*/
-
         var name = "Task Name";
         var content = "Task Content";
         Map<String, Object> data = new HashMap<>();
@@ -179,7 +161,7 @@ public class TaskControllerTest {
         assertThat(actual).containsExactlyInAnyOrderElementsOf(expected);
     }
 
-    /*@Test
+    @Test
     void testUpdate() throws Exception {
         var dto = new TaskUpdateDTO();
         dto.setTitle(JsonNullable.of("title-1"));
@@ -208,7 +190,7 @@ public class TaskControllerTest {
                 .andExpect(status().isNoContent());
 
         assertThat(taskRepository.existsById(testTask.getId())).isFalse();
-    }*/
+    }
 
 
     @Test

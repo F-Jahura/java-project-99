@@ -30,7 +30,6 @@ dependencies {
 	implementation ("org.liquibase:liquibase-core")
 	implementation ("org.postgresql:postgresql:$postgresqlVersion")
 	implementation("org.mapstruct:mapstruct:1.5.5.Final")
-	implementation ("org.mybatis.spring.boot:mybatis-spring-boot-starter:2.2.0")
 
 	implementation ("org.springframework.boot:spring-boot-starter-actuator")
 	implementation ("org.springframework.boot:spring-boot-starter-security")
