@@ -181,10 +181,8 @@ public class TaskControllerTest {
         assertThat(task.getTaskStatus().getSlug()).isEqualTo(dto.getStatus().get());
     }
 
-
-   @Test
+    @Test
     void deleteTest() throws Exception {
-
         mockMvc.perform(delete("/api/tasks/" + testTask.getId())
                         .with(adminToken))
                 .andExpect(status().isNoContent());
