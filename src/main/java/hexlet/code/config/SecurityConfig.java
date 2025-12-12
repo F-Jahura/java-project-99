@@ -49,6 +49,7 @@ public class SecurityConfig {
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers(HttpMethod.POST, "/api/login").permitAll()
                         .requestMatchers("/welcome").permitAll()
+                        .requestMatchers("/").permitAll()
                         .requestMatchers(HttpMethod.GET, "/api/users").permitAll()
                         .requestMatchers("/swagger-ui.html").permitAll()
                         .requestMatchers("/swagger-ui/**").permitAll()
@@ -65,6 +66,7 @@ public class SecurityConfig {
                 .httpBasic(Customizer.withDefaults())
                 .build();
     }
+
 
     @Bean
     public AuthenticationManager authenticationManager(HttpSecurity http) throws Exception {
