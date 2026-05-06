@@ -46,25 +46,25 @@ Task Manager — это полнофункциональное веб-прило
 
 ### Шаги
 
-**Клонировать репозиторий**
+**Клонировать репозиторий:**
    ```bash
    git clone https://github.com/F-Jahura/java-project-99.git
    cd java-project-99
 ```
 
-**Настроить базу данных**  
+**Настроить базу данных:**  
 Создайте PostgreSQL базу (можно через Docker):  
 ```bash
 docker run --name task-manager-db -e POSTGRES_DB=taskmanager -e POSTGRES_USER=postgres -e POSTGRES_PASSWORD=postgres -p 5432:5432 -d postgres:16
 ```
 
-**Собрать и запустить**
+**Собрать и запустить:**
 ```bash
 make build
 make run
 ```
 
-**Открыть в браузере**
+**Открыть в браузере:**
 ```bash
 http://localhost:8080
 ```
