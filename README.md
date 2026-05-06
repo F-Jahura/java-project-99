@@ -33,7 +33,7 @@ Task Manager — это полнофункциональное веб-прило
 | **Database** | PostgreSQL, Liquibase, H2 (тесты) |
 | **Testing** | JUnit 5, Mockito, Testcontainers |
 | **Build & CI/CD** | Gradle, GitHub Actions, SonarQube, Checkstyle |
-| **Container & Deploy** | Docker, Render (PaaS) |
+| **Container & Deploy** | Docker, Render |
 
 ---
 
@@ -41,7 +41,7 @@ Task Manager — это полнофункциональное веб-прило
 
 ### Требования
 - JDK 21
-- Docker (опционально, для PostgreSQL)
+- Docker (для PostgreSQL)
 - Gradle 8.7+
 
 ### Шаги
