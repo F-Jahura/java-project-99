@@ -32,7 +32,7 @@ Task Manager — это полнофункциональное веб-прило
 | **Backend** | Java 21, Spring Boot 3, Spring Security, JWT, Spring Data JPA, Hibernate, Validation |
 | **Database** | PostgreSQL, Liquibase, H2 (тесты) |
 | **Testing** | JUnit 5, Mockito, Testcontainers |
-| **Build & CI/CD** | Gradle (Kotlin DSL), GitHub Actions, SonarQube, Checkstyle |
+| **Build & CI/CD** | Gradle, GitHub Actions, SonarQube, Checkstyle |
 | **Container & Deploy** | Docker, Render (PaaS) |
 | **Documentation** | Springdoc OpenAPI (Swagger UI) |
 
