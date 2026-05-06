@@ -52,14 +52,15 @@ Task Manager — это полнофункциональное веб-прило
    cd java-project-99
 ```
 
-**Настроить базу данных:**  
-Создайте PostgreSQL базу (можно через Docker):  
+**Отчёт о покрытии кода:**
 ```bash
-docker run --name task-manager-db -e POSTGRES_DB=taskmanager -e POSTGRES_USER=postgres -e POSTGRES_PASSWORD=postgres -p 5432:5432 -d postgres:16
+make report     
+make sonar
 ```
 
-**Собрать и запустить:**
+**Тестировать, Собрать и запустить:**
 ```bash
+make test
 make build
 make run
 ```
