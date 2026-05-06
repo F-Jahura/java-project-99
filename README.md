@@ -34,7 +34,6 @@ Task Manager — это полнофункциональное веб-прило
 | **Testing** | JUnit 5, Mockito, Testcontainers |
 | **Build & CI/CD** | Gradle, GitHub Actions, SonarQube, Checkstyle |
 | **Container & Deploy** | Docker, Render (PaaS) |
-| **Documentation** | Springdoc OpenAPI (Swagger UI) |
 
 ---
 
